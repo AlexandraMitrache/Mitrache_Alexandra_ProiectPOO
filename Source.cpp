@@ -63,9 +63,52 @@ public:
 		this->numarMese = r.numarMese;
 		this->numarChefi = r.numarChefi;
 		this->varstaChef = new int[r.numarChefi];
-		for (int i = 0;i < this->numarChefi - 1;i++)
+		for (int i = 0;i < this->numarChefi;i++)
 			this->varstaChef[i] = r.varstaChef[i];
-		cout << "S-a apelat constructorul de copiere" << endl;
+		
+	}
+	Restaurant& operator =(const Restaurant &r) {//operator egal
+		if (this->numeRestaurant != NULL)
+			delete[]this->numeRestaurant;
+		this->numeRestaurant = NULL;
+		this->numeRestaurant = new char(strlen(r.numeRestaurant) + 1);
+		strcpy_s(this->numeRestaurant, strlen(r.numeRestaurant) + 1, r.numeRestaurant);
+		this->numarMese = r.numarMese;
+		this->numarChefi = r.numarChefi;
+		this->varstaChef = new int[r.numarChefi];
+		for (int i = 0;i < this->numarChefi;i++)
+			this->varstaChef[i] = r.varstaChef[i];
+		return *this;
+		
+
+	}
+	friend ostream& operator<<(ostream& out, Restaurant& r) {
+		out << "Nume: " << r.numeRestaurant << endl;
+		out << "Numarul de chefi este " << r.numarChefi;
+		for (int i = 0; i < r.numarChefi; i++)
+			out << "varsta fiecarui chef este  " << i + 1 << ":" << r.varstaChef[i] << endl;
+		out << "numarul de mese este " << r.numarMese << endl;
+		
+		return out;
+	}
+	friend istream& operator>>(istream& in, Restaurant& r) {
+		cout << "Nume: ";
+		in>>r.numeRestaurant ;
+		cout << "Numarul de chefi este ";
+		in>> r.numarChefi;
+		for (int i = 0; i < r.numarChefi; i++) {
+			cout << "varsta fiecarui chef este  " << i + 1 << ":";
+			in >> r.varstaChef[i];
+		}
+		cout << "numarul de mese este ";
+		in >> r.numarMese;
+
+		return in;
+	}
+	Restaurant operator++()
+	{
+		this->numarChefi++;
+		return *this;
 	}
 	//destructor 
 	~Restaurant() {
@@ -93,7 +136,7 @@ public:
 		{
 			cout << this->varstaChef[i] << ", ";
 		}
-		cout << this->varstaChef[this->numarChefi - 1] << endl;
+		cout << endl;
 	}
 	Restaurant initializareRestaurant() {
 		Restaurant restaurant;
@@ -181,24 +224,26 @@ public:
 			this->vechimeAngajati[i] = vechimeAngajati[i];
 		}
 	}
-	superMarket(float suprafata):anInfintare(anInfintare)
+	superMarket(float suprafata,int anInfintare):anInfintare(anInfintare)
 	{
 		this->numeLant = new char[strlen(numeLant) + 1];
 		strcpy_s(this->numeLant, strlen(numeLant) + 1, numeLant);
 		this->suprafata = suprafata;
 		this->nrAngajati = nrAngajati;
 		this->vechimeAngajati = new int[this->nrAngajati];
+		
 		for (int i = 0;i < nrAngajati;i++)
 		{
 			this->vechimeAngajati[i] = vechimeAngajati[i];
 		}
 	}
-	superMarket(const char* numeLant, float suprafata, int AnInfintare, int nrAngajati, int* vechimeAngajati) :anInfintare(anInfintare) {
+	superMarket(const char* numeLant, float suprafata, int AnInfintare, int nrAngajati, int* vechimeAngajati) :anInfintare(AnInfintare) {
 		this->numeLant = new char[strlen(numeLant) + 1];
 		strcpy_s(this->numeLant, strlen(numeLant) + 1,numeLant);
 		this->suprafata = suprafata;
 		this->nrAngajati = nrAngajati;
 		this->vechimeAngajati = new int[this->nrAngajati];
+
 		for (int i = 0;i < nrAngajati;i++)
 		{
 			this->vechimeAngajati[i] = vechimeAngajati[i];
@@ -206,7 +251,7 @@ public:
 	}
 	void afisareSup()
 	{
-		cout << "Numele lantului" << this->numeLant << "\nsuprafata" << this->suprafata << "\naninfiintare" << this->anInfintare << "\nrangajati" << this->nrAngajati << "\vechimea angajatilor";
+		cout << "Numele lantului" << this->numeLant << "\nsuprafata" << this->suprafata << "\naninfiintare" << this->anInfintare << "\n numar angajati " << this->nrAngajati << "\n vechimea angajatilor";
 		for (int i = 0;i < nrAngajati - 1;i++)
 		{
 			cout << this->vechimeAngajati[i] << " ,";
@@ -224,6 +269,49 @@ public:
 			this->vechimeAngajati[i] = vechimeAngajati[i];
 		}
 	}
+	 superMarket& operator=(const superMarket& sm)  {
+		 if (this->numeLant != NULL)
+			 delete[]this->numeLant;
+		 this->numeLant = NULL;
+		this->numeLant = new char[strlen(sm.numeLant) + 1];
+		strcpy_s(this->numeLant, strlen(sm.numeLant) + 1, sm.numeLant);
+		this->suprafata = sm.suprafata;
+		this->nrAngajati = sm.nrAngajati;
+		this->vechimeAngajati = new int[sm.nrAngajati];
+		for (int i = 0;i < sm.nrAngajati;i++)
+		{
+			this->vechimeAngajati[i] = vechimeAngajati[i];
+		}
+		return *this;
+	}
+	 friend ostream& operator<<(ostream& out, superMarket& s) {
+		 out << "Nume: " << s.numeLant << endl;
+		 out << "Numarul de angajati este " << s.nrAngajati;
+		 for (int i = 0; i < s.nrAngajati; i++)
+			 out << "vechimea fiecarui angajat " << i + 1 << ":" << s.vechimeAngajati[i] << endl;
+		 out << "suprafata" << s.suprafata << endl;
+
+		 return out;
+	 }
+	 friend istream& operator>>(istream& in, superMarket& s) {
+		 cout << "Nume: ";
+		 in >> s.numeLant;
+		 cout << "Numarul de angajati este ";
+		 in>> s.nrAngajati;
+		 for (int i = 0; i < s.nrAngajati; i++) {
+			 cout << "vechimea fiecarui angajat " << i + 1 << ":";
+			 in >> s.vechimeAngajati[i];
+		 }
+		 cout << "suprafata";
+		 in >> s.suprafata;
+
+		 return in;
+	 }
+	 superMarket operator++()
+	 {
+		 this->nrAngajati++;
+		 return *this;
+	 }
 
 	static void setTva(int tvaNou)
 	{
@@ -327,6 +415,48 @@ public:
 
 
 	}
+	Covrigarie operator&=(const Covrigarie& co)  {
+		
+		this->nrCovrigi = co.nrCovrigi;
+		this->pretCovrig = co.pretCovrig;
+		if (this->nrClienti != NULL) {
+			delete[]this->nrClienti;
+			this->nrClienti = NULL;
+		}
+		this->nrClienti = new int[co.nrCovrigi];
+		for (int i = 0;i < co.nrCovrigi;i++)
+			this->nrClienti[i] = nrClienti[i];
+		this->numeCovrigarie = new char[strlen(co.numeCovrigarie) + 1];
+		strcpy_s(this->numeCovrigarie, strlen(co.numeCovrigarie) + 1, co.numeCovrigarie);
+		return *this;
+
+	}
+	friend ostream& operator<<(ostream& out,Covrigarie& c) {
+		out << "Numarul covrigilor este " << c.nrCovrigi << endl;
+		for (int i = 0; i < c.nrCovrigi; i++)
+			out << "Numarul de clienti este " << i + 1 << ":" << c.nrClienti[i] << endl;
+		out << "Numele " << c.numeCovrigarie << endl;
+		out << "Pretul unui covrig este: " << c.pretCovrig<< endl;
+		return out;
+	}
+	friend istream& operator>>(istream& in, Covrigarie& c) {
+		cout << "Numarul covrigilor:";
+		in >>c.nrCovrigi ;
+		for (int i = 0;i < c.nrCovrigi;i++) {
+			cout << "numarul de clienti este" << endl;
+			in >> c.nrClienti[i];
+		}
+		cout << "numele este:";
+		in >> c.numeCovrigarie;
+		cout << "\npretul unui covrig este:";
+		in >> c.pretCovrig;
+		return in;
+	}
+	Covrigarie operator++()
+	{
+		this->nrCovrigi++;
+		return *this;
+	}
 	~Covrigarie() {
 		if (*numeCovrigarie != NULL)
 			delete[]numeCovrigarie;
@@ -352,8 +482,8 @@ public:
 };
 int main()
 {
-		int* vechimeAngajati = new int[100];
-	for (int i = 0;i < 100;i++)
+		int* vechimeAngajati = new int[3];
+	for (int i = 0;i < 3;i++)
 		vechimeAngajati[i] = i + 9;
 	superMarket superl("Kau", 4, 2020, 3, vechimeAngajati);
 	superl.afisareSup();
@@ -362,7 +492,7 @@ int main()
 		varstaChef[i] = i * 20 + 2;
 	Restaurant r4("ANa",34,5,6,varstaChef);
 	
-	r4.setVarsta(varstaChef,8);
+	//r4.setVarsta(varstaChef,8);
 	r4.afisare();
 	Restaurant restaurant2("Bontea", 2020,2, 4, varstaChef);//afisare constructor fara parametrii
 	Restaurant r2 = restaurant2;
