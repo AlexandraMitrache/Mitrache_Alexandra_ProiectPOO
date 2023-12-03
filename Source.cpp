@@ -194,13 +194,13 @@ public:
 
 	} 
 	
-	void Nrmese(int numarMese) {
+	void setNrmese(int numarMese) {
 		if (numarMese < 20)
 			cout << "restaurantul e prea mic" << endl;
 		else
 			this->numarMese = numarMese;
 	}
-	void nrChefi(int numarChefi)
+	void setnrChefi(int numarChefi)
 	{
 		if (numarChefi != 0)
 			this->numarChefi = numarChefi;
@@ -554,17 +554,62 @@ public:
 	{
 		return this->nume;
 	}
-	void setNume(string numeNou)
-	{
-		this->nume = numeNou;
-	}
+	
 	void setNumarAccesari(int numarNou)
 	{
 		this->numarAccesari = numarNou;
 	}
 
-	
+	int operator[](int i) {
+		return this->r.getVarstaChef()[i];
 
+	}
+
+	friend ostream& operator  << (ostream & out, TakeAway & s)
+	{
+		out << " numarChefi:" << s.r.getNumarChefi();
+		out << "\n numarul de mese este" << s.r.getNrmese();
+		out << "\nvarsta fiecarui sef este";
+		for (int i = 0;i < s.r.getNumarChefi();i++)
+		{
+			out << i + 1 << "este" << s.r.getVarstaChef();
+		}
+		out << "\n numele este" << s.getNume();
+		out << "\n numarul accesarior este" << s.getnumarAccesari();
+		out << "\n numarul comenzilor este";
+		for (int i = 0;i < s.getnumarAccesari();i++)
+		{
+			out << i + 1 << "este " << s.getNumarComenzi()[i];
+			out << endl;
+		}
+		return out;
+	}
+	TakeAway operator=(TakeAway& s)
+	{
+		if (this != &s)
+		{
+			
+		 this->r.setnrChefi(s.r.getNumarChefi());
+			this->r.setNrmese(s.r.getNrmese());
+			if (this->r.getVarstaChef() != nullptr)
+			{
+				delete[]this->r.getVarstaChef();
+			}
+			for (int i = 0;i < this->r.getNumarChefi(); i++) {
+				this->r.getVarstaChef()[i] = s.r.getVarstaChef()[i];
+			}
+
+			this->nume=s.nume;
+			this->numarAccesari = s.numarAccesari;
+			this->numarComenzi = new int[s.numarAccesari];
+			for (int i = 0;i < s.numarAccesari;i++)
+			{
+				this->numarComenzi = s.numarComenzi;
+			}
+		}
+		return *this;
+
+	}
 	
 };
 int main()
@@ -620,6 +665,51 @@ int main()
 	covrigarie3.operator+(3);
 	Restaurant::setSector(3);
 	restaurant2.afisareRestaurant();
+	//Vectori de tipul claselor
+	Restaurant vector[4];
+	for (int i = 0;i < 4; i++)
+	{
+		cin >> vector[i];
+	}
+	for (int i = 0;i < 4; i++)
+	{
+		cout << vector[i];
+	}
+	superMarket vector2[6];
+	for (int i = 0;i < 6; i++)
+	{
+		cin >> vector2[i];
+	}
+	for (int i = 0;i < 6;i++)
+	{
+		cout << vector2[i];
+	}
+
+	Covrigarie vector3[7];
+
+	for (int i = 0;i < 7; i++)
+	{
+		cin >> vector3[i];
+	}
+	for (int i = 0;i < 7;i++)
+	{
+		cout << vector3[i];
+	}
+	Restaurant matriceJ[2][2];
+	for (int i = 0;i < 2;i++) {
+		for (int j = 0;j < 2;j++) {
+			cin >> matriceJ[i][j];
+		}
+	}
+
+	for (int i = 0;i < 2;i++) {
+		for (int j = 0;j < 2;j++) {
+			cout << matriceJ[i][j];
+			if (j == 1)
+				cout << "--------";
+		}
+		cout << endl;
+	}
 
 
 }
