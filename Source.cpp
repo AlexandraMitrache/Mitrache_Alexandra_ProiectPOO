@@ -1,19 +1,20 @@
 //Domeniul ales Mancare  
 #include <iostream>
+#include <fstream>
 using namespace std;
 class Restaurant {
 private:
-	char* numeRestaurant;
+	 char* numeRestaurant;
 	int numarMese;
 
 	int numarChefi;
 	int* varstaChef;
 	static int sector;
-	const int id;
+	const int anInfiintare;
 
 public:
 	//constructor fara parametrii
-	Restaurant() :id(numarChefi++)
+	Restaurant() :anInfiintare()
 	{
 
 		this->numeRestaurant = new char[strlen("Xchef") + 1];
@@ -29,7 +30,7 @@ public:
 		cout << "S-a apelat constructorul fara parametrii" << endl;
 	}
 	//constructor cu un parametru
-	Restaurant(int numarMese) :id(numarChefi++) {
+	Restaurant(int numarMese):anInfiintare(2020) {
 		this->numeRestaurant = new char[strlen(numeRestaurant) + 1];
 		strcpy_s(this->numeRestaurant, strlen(numeRestaurant) + 1, numeRestaurant);
 		this->numarMese = numarMese;
@@ -42,7 +43,7 @@ public:
 
 	}
 	//constructor cu toti parametrii
-	Restaurant(const char* numeRestaurant, int numarMese, int numarChefi, int* varstaChef) :id(numarChefi++) {
+	Restaurant(const char* numeRestaurant, int numarMese, int numarChefi, int* varstaChef):anInfiintare(2020) {
 		this->numeRestaurant = new char[strlen(numeRestaurant) + 1];
 		strcpy_s(this->numeRestaurant, strlen(numeRestaurant) + 1, numeRestaurant);
 		this->numarMese = numarMese;
@@ -56,7 +57,7 @@ public:
 
 
 	}
-	Restaurant(const Restaurant& r) :id(id)
+	Restaurant(const Restaurant& r) :anInfiintare()
 	{
 		this->numeRestaurant = new char(strlen(r.numeRestaurant) + 1);
 		strcpy_s(this->numeRestaurant, strlen(r.numeRestaurant) + 1, r.numeRestaurant);
@@ -84,23 +85,27 @@ public:
 	}
 	friend ostream& operator<<(ostream& out, Restaurant& r) {
 		out << "Nume: " << r.numeRestaurant << endl;
-		out << "Numarul de chefi este " << r.numarChefi;
-		for (int i = 0; i < r.numarChefi; i++)
-			out << "varsta fiecarui chef este  " << i + 1 << ":" << r.varstaChef[i] << endl;
 		out << "numarul de mese este " << r.numarMese << endl;
+		out << "Numarul de chefi este " << r.numarChefi<<endl;
+		for (int i = 0; i < r.numarChefi; i++)
+			out << "varsta chefului   " << i + 1 << " este :" << r.varstaChef[i] << endl;
+	
 
 		return out;
 	}
 	friend istream& operator>>(istream& in, Restaurant& r) {
 		cout << "Nume: ";
 		in >> r.numeRestaurant;
-		cout << "Numarul de chefi este ";
+		cout << "\nnumarul de mese este ";
+		in >> r.numarMese;
+
+		cout << "\n Numarul de chefi este ";
 		in >> r.numarChefi;
 		for (int i = 0; i < r.numarChefi; i++) {
-			cout << "varsta fiecarui chef este  " << i + 1 << ":";
+			cout << "\nvarsta fiecarui chef este  " << i + 1 << ":";
 			in >> r.varstaChef[i];
 		}
-		cout << "numarul de mese este ";
+		cout << "\n numarul de mese este ";
 		in >> r.numarMese;
 
 		return in;
@@ -138,16 +143,16 @@ public:
 	}
 	//destructor 
 	~Restaurant() {
-		if (this->numeRestaurant != NULL) {
+		if (this->numeRestaurant ) {
 			delete[]this->numeRestaurant;
-			this->numeRestaurant = NULL;
+			
 		}
-		if (this->varstaChef != NULL)
+		if (this->varstaChef )
 		{
 			delete[]this->varstaChef;
-			this->varstaChef = NULL;
+			
 		}
-		cout << "S-a apelat destructor " << endl;
+	
 	}
 
 	static void setSector(int sectornou) {
@@ -156,8 +161,8 @@ public:
 
 
 	void afisareRestaurant() {
-		cout << "Numele restaurantului este:" << this->numeRestaurant << "\nnumarul de mese din restaurant este:" << this->numarMese << "\nidiul este" << id <<
-			"  numarul de chefi din restaurant este" << this->numarChefi << "\nvasrta chefului " << endl;
+		cout << "Numele restaurantului este:" << this->numeRestaurant << "\nbnumarul de mese din restaurant este:" << this->numarMese  <<
+			"  \n numarul de chefi din restaurant este" << this->numarChefi << "\n vasrta chefului " << endl;
 		for (int i = 0;i < this->numarChefi;i++)
 		{
 			cout << this->varstaChef[i] << ", ";
@@ -245,12 +250,8 @@ public:
 		this->numeLant = new char[strlen("Lidl") + 1];
 		strcpy_s(this->numeLant, strlen("Lidl") + 1, "Lidl");
 		this->suprafata = 120;
-		this->nrAngajati = 20;
-		this->vechimeAngajati = new int[this->nrAngajati];
-		for (int i = 0;i < nrAngajati;i++)
-		{
-			this->vechimeAngajati[i] = vechimeAngajati[i];
-		}
+		this->nrAngajati =0 ;
+		vechimeAngajati = nullptr;
 	}
 	superMarket(float suprafata, int anInfintare) :anInfintare(anInfintare)
 	{
@@ -300,11 +301,13 @@ public:
 	superMarket& operator=(const superMarket& sm) {
 		if (this->numeLant != NULL)
 			delete[]this->numeLant;
-		this->numeLant = NULL;
+		
 		this->numeLant = new char[strlen(sm.numeLant) + 1];
 		strcpy_s(this->numeLant, strlen(sm.numeLant) + 1, sm.numeLant);
 		this->suprafata = sm.suprafata;
 		this->nrAngajati = sm.nrAngajati;
+		if (this->vechimeAngajati != nullptr)
+			delete[]this->vechimeAngajati;
 		this->vechimeAngajati = new int[sm.nrAngajati];
 		for (int i = 0;i < sm.nrAngajati;i++)
 		{
@@ -415,7 +418,7 @@ public:
 
 
 	}
-	Covrigarie(char* numeCovrigarie, int nrCovrigi, float pretCovrig, int anDeschidere) :anDeschidere(anDeschidere) {//constructor cu toti parametrii;
+	Covrigarie(const char* numeCovrigarie, int nrCovrigi, float pretCovrig, int anDeschidere) :anDeschidere(anDeschidere) {//constructor cu toti parametrii;
 		this->numeCovrigarie = new char[strlen(numeCovrigarie) + 1];
 		strcpy_s(this->numeCovrigarie, strlen(numeCovrigarie) + 1, numeCovrigarie);
 		this->nrCovrigi = nrCovrigi;
@@ -517,124 +520,190 @@ Covrigarie operator+(int x, Covrigarie co)
 	co.pretCovrig += x;
 	return co;
 }
-class TakeAway {
+//HAS A
+class Oras {
 private:
-	Restaurant r;
-	int *numarComenzi;
-	int numarAccesari;
-	string nume;
+	int nrClientiFideli;
+	Restaurant** p1;
 public:
-	TakeAway()
-	{
-		
-		
-		this->r.getNume();
-		this->r.getNumarChefi();
-		this ->numarAccesari = this->numarAccesari;
-		this->numarComenzi = new int[this->numarAccesari];
-		for (int i = 0;i < this->numarAccesari;i++)
-		{
-			this->numarComenzi = numarComenzi;
+	Oras() {
+		this->nrClientiFideli = 0;
+		this->p1 = NULL;
+	}
+
+	Oras(int nrPersoane,Restaurant** p1) {
+		this->nrClientiFideli = nrPersoane;
+		this->p1 = new Restaurant * [this->nrClientiFideli];
+		for (int i = 0; i < this->nrClientiFideli; i++) {
+			this->p1[i] = p1[i];
 		}
-		this->nume = "Glovo";
-	}
-	~TakeAway() {
-
-	}
-	int getnumarAccesari()
-	{
-		return this->numarAccesari;
-	}
-	int* getNumarComenzi()
-	{
-		return this->numarComenzi;
-
-	}
-	string getNume()
-	{
-		return this->nume;
-	}
-	
-	void setNumarAccesari(int numarNou)
-	{
-		this->numarAccesari = numarNou;
 	}
 
-	int operator[](int i) {
-		return this->r.getVarstaChef()[i];
-
-	}
-
-	friend ostream& operator  << (ostream & out, TakeAway & s)
-	{
-		out << " numarChefi:" << s.r.getNumarChefi();
-		out << "\n numarul de mese este" << s.r.getNrmese();
-		out << "\nvarsta fiecarui sef este";
-		for (int i = 0;i < s.r.getNumarChefi();i++)
-		{
-			out << i + 1 << "este" << s.r.getVarstaChef();
+	~Oras() {
+		if (this->p1 != NULL) {
+			delete[]this->p1;
 		}
-		out << "\n numele este" << s.getNume();
-		out << "\n numarul accesarior este" << s.getnumarAccesari();
-		out << "\n numarul comenzilor este";
-		for (int i = 0;i < s.getnumarAccesari();i++)
-		{
-			out << i + 1 << "este " << s.getNumarComenzi()[i];
-			out << endl;
-		}
-		return out;
 	}
-	TakeAway operator=(TakeAway& s)
+
+	void afisareOras() {
+		cout << "Afisare JURIU!!! " << endl;
+		cout << "Numarul de Participanti: " << this->nrClientiFideli << endl;
+		for (int i = 0; i < this->nrClientiFideli; i++) {
+			this->p1[i]->afisareRestaurant();
+		}
+	}
+};
+
+class Cantina :public Restaurant//is a restaurant
+{
+private :
+ int nrPortii;
+ int* pretPortie; 
+
+public:
+	Cantina():Restaurant()
 	{
-		if (this != &s)
-		{
-			
-		 this->r.setnrChefi(s.r.getNumarChefi());
-			this->r.setNrmese(s.r.getNrmese());
-			if (this->r.getVarstaChef() != nullptr)
+		this->nrPortii = 0;
+		this->pretPortie = nullptr;
+	}
+	Cantina(char* numeRestaurant, int numarMese, int numarChefi, int* varstaChef,int nrPortii):
+		Restaurant(numeRestaurant, numarMese, numarChefi,  varstaChef)
+	{
+		this->nrPortii = nrPortii;
+		this->pretPortie = new int[nrPortii];
+			for (int i = 0;i < this->nrPortii;i++)
 			{
-				delete[]this->r.getVarstaChef();
-			}
-			for (int i = 0;i < this->r.getNumarChefi(); i++) {
-				this->r.getVarstaChef()[i] = s.r.getVarstaChef()[i];
-			}
+				this->pretPortie[i] = pretPortie[i];
 
-			this->nume=s.nume;
-			this->numarAccesari = s.numarAccesari;
-			this->numarComenzi = new int[s.numarAccesari];
-			for (int i = 0;i < s.numarAccesari;i++)
-			{
-				this->numarComenzi = s.numarComenzi;
 			}
+	}
+	~Cantina()
+	{
+		if (this->pretPortie != nullptr)
+		{
+			delete[]this->pretPortie;
 		}
-		return *this;
+	}
+	Cantina(const Cantina& c):Restaurant(c)
+	{
+		this->nrPortii = c.nrPortii;
+		this->pretPortie = new int[c.nrPortii];
+		for (int i = 0;i < c.nrPortii;i++)
+		{
+			this->pretPortie[i] = c.pretPortie[i];
+
+		}
 
 	}
-	
+	 Cantina operator= (const Cantina & c) 
+	{
+		 Restaurant ::operator=(c);
+		 this->nrPortii = c.nrPortii;
+		 if (this->pretPortie != nullptr)
+			 delete[]pretPortie;
+		 this->pretPortie = new int[c.nrPortii];
+		 for (int i = 0;i < c.nrPortii;i++)
+		 {
+			 this->pretPortie[i] = c.pretPortie[i];
+
+		 }
+
+		 
+		 return *this;
+	}
+
+	 friend ostream& operator<<(ostream& out,const  Cantina c)
+	 {
+		 //out<<(Restaurant)c;
+		 out << "Numarul de portii este: " << c.nrPortii;
+		 out << '\n';
+		
+		 for (int i = 0;i < c.nrPortii;i++)
+		 {
+			 out << "Prestul portiei :" << i + 1 << "este ";
+			 out << c.pretPortie[i];
+			 out << endl;
+		 }
+		 return out;
+	 }
+};
+//crearea claselor virtuale
+class RestaurantStrain:public Restaurant {
+private:
+	string tipRestaurant;
+public:
+	string getRestaurant() {
+		return this->tipRestaurant;
+	}
+
+	virtual void calculMediaVarstaParticipanti() = 0;
+};
+class VechimeRestaurant {
+public:
+	virtual void maresteVechimeRestaurant() = 0;
+	virtual void scadeVechimeRestaurant() = 0;
+};
+
+class RestaurantChinezesc :public RestaurantStrain, public VechimeRestaurant {
+public:
+	virtual void VechimeRestaurant() {
+		cout << "Vechimea unui restaurant este " << endl;
+	}
 };
 int main()
 {
-	
-	int* vechimeAngajati = new int[3];
-	for (int i = 0;i < 3;i++)
-		vechimeAngajati[i] = i + 9;
-	
-	superMarket superl("Kaufland", 4, 2020, 3, vechimeAngajati);
-	superl.afisareSup();
+	//Testarea constructorului fara parametrii
+	Restaurant r1;
+	//testare constructor cu parametrii
 	int* varstaChef = new int[50];
 	for (int i = 0;i <= 50;i++)
 		varstaChef[i] = i * 20 + 2;
-	Restaurant r4("ANA", 34,  6, varstaChef);
+	Restaurant r4("xChef", 34, 6, varstaChef);
+	cout << r4;
+	//testare getteri si setteri
+	
+	Restaurant r2("Bontea", 22, 3, varstaChef);
+	cout<<r2.getNrmese()<<endl;
+	//testare operatori<< si >>
+	Restaurant r3;
+	cin >>r3 ;
+	cout << r3;
+	//Testarea constructorului fara parametrii
+	Covrigarie c1;
+	cout << c1;
+	cout << endl;
+//testarea constructorului cu parametrii
+	Covrigarie c2("Matei", 5, 2, 2010);
+	cout << c2;
+	//apelare constructor fara parametrii
+	superMarket s2;
+	cout << s2;
+	//apelare constructor cu parametrii
+	int vechimeAngajati[2] = { 1,3 };
+	superMarket s1("profi", 20, 2020, 2, vechimeAngajati);
+	cout << s1;
+
+
+	int* vechimeAngajatilo = new int[3];
+	for (int i = 0;i < 3;i++)
+		vechimeAngajati[i] = i + 9;
+
+	superMarket superl("Kaufland", 4, 2020, 3, vechimeAngajati);
+	superl.afisareSup();
+	int* varstaChefilor = new int[50];
+	for (int i = 0;i <= 50;i++)
+		varstaChef[i] = i * 20 + 2;
+	Restaurant res4("ANA", 34, 6, varstaChef);
 	Restaurant r8;
 	cin >> r8;
 	cout << r8 << endl;
 
 	//r4.setVarsta(varstaChef,8);
 	r4.afisareRestaurant();
-	Restaurant restaurant2("Bontea", 20,  4, varstaChef);//afisare constructor fara parametrii
-	Restaurant r2 = restaurant2;
+	Restaurant restaurant2("Bontea", 20, 4, varstaChef);//afisare constructor fara parametrii
+	Restaurant res = restaurant2;
 	int numarMesenou = restaurant2(20);
-	int numarChefi = (int) restaurant2;
+	int numarChefi = (int)restaurant2;
 	int valoare = r2[2];
 	r2[2] = 8;
 	r2.afisareRestaurant();
@@ -647,7 +716,7 @@ int main()
 		cout << "nu are mese" << endl;
 	}
 
-	Restaurant r3 = ++r2;
+	Restaurant res3 = ++r2;
 
 	r3.afisareRestaurant();
 	r2.afisareRestaurant();
@@ -711,5 +780,31 @@ int main()
 		cout << endl;
 	}
 
+	// Scriere intr-un fisier normal
+	ofstream fileWrite;
+	fileWrite.open("ALEXANDRA.txt", ios::out);
+	fileWrite << "Rlk";
+	fileWrite.close();
 
+	//Scriere intr-un fisier binar
+	ofstream fileWriteBin;
+	fileWriteBin.open("fisier_binar.dat", ios::binary | ios::out);
+	fileWriteBin << r4;
+	fileWriteBin.close();
+
+	// Citire din fisier normal
+	ifstream fileRead;
+	fileRead.open("ALEXANDRA.txt", ios::in);
+		Restaurant r9;
+	fileRead >> r9;
+	cout << "Obiect citit din fisier: " << endl << r9;
+	fileRead.close();
+
+	// Citire din fisier binar
+	ifstream fileReadBin;
+	fileReadBin.open("fisier_bin.dat", ios::binary | ios::in);
+     Restaurant  p21;
+	fileReadBin >> p21;
+	cout << "Obiect citit din fisier: " << endl << p21;
+	fileReadBin.close();
 }
